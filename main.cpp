@@ -77,8 +77,8 @@ IDxcBlob* CompileShader(
 	IDxcCompiler3* dxcCompiler,
 	IDxcIncludeHandler* includeHandler)
 {
-	//声からシェーダーをコンパイルする旨をログに出す
-	Log(ConvertString(std::format(L"Begin CompileShader, path:{}\n, filePath, profile")));
+	//これからシェーダーをコンパイルする旨をログに出す
+	Log(ConvertString(std::format(L"Begin CompileShader, path:{}\n", filePath, profile)));
 	//hlslファイルを読む
 	IDxcBlobEncoding* shaderSource = nullptr;
 	HRESULT hr = dxcUtils->LoadFile(filePath.c_str(), nullptr, &shaderSource);
@@ -118,18 +118,19 @@ IDxcBlob* CompileShader(
 		//警告・エラーダメゼッタイ
 		assert(false);
 
-		//コンパイル結果から実行用のバイナリ部分を取得
-		IDxcBlob* shaderBlob = nullptr;
-		hr = shaderResult->GetOutput(DXC_OUT_OBJECT, IID_PPV_ARGS(&shaderBlob), nullptr);
-		assert(SUCCEEDED(hr));
-		//成功したログを出す
-		Log(ConvertString(std::format("Compile Succeeded, path{}, profile:{}\n", filePath, profile)));
-		//もう使わないリソースを解放
-		shaderSource->Release();
-		shaderResult->Release();
-		//実行用のバイナリを返却
-		return shaderBlob;
+		
 	}
+	//コンパイル結果から実行用のバイナリ部分を取得
+	IDxcBlob* shaderBlob = nullptr;
+	hr = shaderResult->GetOutput(DXC_OUT_OBJECT, IID_PPV_ARGS(&shaderBlob), nullptr);
+	assert(SUCCEEDED(hr));
+	//成功したログを出す
+	Log(ConvertString(std::format(L"Compile Succeeded, path{}, profile:{}\n", filePath, profile)));
+	//もう使わないリソースを解放
+	shaderSource->Release();
+	shaderResult->Release();
+	//実行用のバイナリを返却
+	return shaderBlob;
 }
 
 //Windoesアプリでのエントリーポイント(main関数)
