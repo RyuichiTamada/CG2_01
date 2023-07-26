@@ -21,6 +21,6 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object.3d.VS.hlsl" />
-    <FxCompile Include="Object3d.PS.hlsl" />
+    <FxCompile Include="Object.3d.PS.hlsl" />
   </ItemGroup>
 </Project>
